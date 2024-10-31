@@ -733,7 +733,7 @@ a:hover {
 <div id="myNav" class="overlay-half">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <div class="overlay-content">
-    <a href="#"><i class="fas fa-home"></i> Beranda</a>
+    <a href="https://mannstoreid.vercel.app/"><i class="fas fa-home"></i> Beranda</a>
     <a href="menu/layanan.html"><i class="fas fa-concierge-bell"></i> Layanan</a>
     <a href="menu/about.html"><i class="fas fa-info-circle"></i> About</a>
     <a href="menu/contact.html"><i class="fas fa-envelope"></i> Kontak</a>
@@ -754,21 +754,21 @@ a:hover {
             
 
     <div class="product-card">
-        <a href="https://ahsan-store-github-io.vercel.app/Game/SubGame/mobilelegend.html" target="_blank">
+        <a href="https://mannstoreid.vercel.app/Game/SubGame/mobilelegend.html" target="_blank">
             <img src="https://static-src.vocagame.com/topupnolimit/Mobile%20legend-09cb-original.webp" alt="Game 1">
             <h3>Mobile Legend</h3>
         </a>
     </div>
 
     <div class="product-card">
-        <a href="https://ahsan-store-github-io.vercel.app/Game/SubGame/FreeFire.html" target="_blank">
+        <a href="https://mannstoreid.vercel.app/Game/SubGame/FreeFire.html" target="_blank">
             <img src="https://static-src.vocagame.com/topupnolimit/free_fire-d967-original-ce101-original.webp" alt="Game 2">
             <h3>Free Fire</h3>
         </a>
     </div>
 
     <div class="product-card">
-        <a href="https://ahsan-store-github-io.vercel.app/Game/SubGame/PUBG.html" target="_blank">
+        <a href="https://mannstoreid.vercel.app/Game/SubGame/PUBG.html" target="_blank">
             <img src="https://static-src.vocagame.com/topupnolimit/unnamed%20(3)-04102-original.png" alt="Game 3">
             <h3>Pubg</h3>
         </a>
@@ -843,136 +843,7 @@ a:hover {
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
     <script>
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyA1yk1tIBhP8a5VIDo62ZiN9kjD_tNhQ70",
-  authDomain: "mannstore-50549.firebaseapp.com",
-  projectId: "mannstore-50549",
-  storageBucket: "mannstore-50549.appspot.com",
-  messagingSenderId: "539021282370",
-  appId: "1:539021282370:web:6aa2f6bd176eee94ffb1db",
-  measurementId: "G-40JZM8L3WY"
-};
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // Mengambil status toko dari Firestore
-        function loadStoreStatus() {
-            db.collection('StoreStatus').doc('status').get().then((doc) => {
-                if (doc.exists) {
-                    const storeStatus = doc.data().status;
-
-                    // Menampilkan pesan menggunakan SweetAlert2
-if (storeStatus === 'open') {
-    Swal.fire({
-        icon: 'success',
-        title: 'Toko sedang buka!',
-        text: 'Silakan nikmati belanja Anda.',
-        confirmButtonText: 'OK',
-        allowOutsideClick: false // Mencegah menutup saat klik di luar
-    });
-} else {
-    Swal.fire({
-        icon: 'error',
-        title: 'Toko sedang tutup!',
-        text: 'Anda akan diarahkan ke halaman 404.',
-        confirmButtonText: 'OK',
-        allowOutsideClick: false // Mencegah menutup saat klik di luar
-    }).then(() => {
-        setTimeout(() => {
-            window.location.href = "404/404.html"; // Ganti dengan URL halaman 404 Anda
-        }, 500); // 0.5 detik sebelum diarahkan
-    });
-}
-
-                } else {
-                    console.log("No such document!");
-                }
-            }).catch((error) => {
-                console.error("Error fetching store status: ", error);
-            });
-        }
-
-        // Panggil fungsi untuk memuat status toko saat halaman dimuat
-        loadStoreStatus();
-    
-    function openNav() {
-        document.getElementById("myNav").style.width = "45%";
-    }
-
-    function closeNav() {
-        document.getElementById("myNav").style.width = "0";
-    }
-    
-    <!-- slider -->
-     var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 1,           // Menampilkan 1 slide setiap kali
-            spaceBetween: 10,           // Jarak antar slide
-            loop: true,                 // Slider akan melingkar (loop)
-            pagination: {
-                el: '.swiper-pagination',  // Mengaktifkan pagination titik-titik
-                clickable: true,           // Membuat pagination dapat diklik
-            },
-            autoplay: {
-                delay: 3000,                // Auto-slide setiap 3 detik
-                disableOnInteraction: false  // Lanjutkan autoplay setelah interaksi
-            },
-            effect: 'slide',                // Efek transisi
-            speed: 800                      // Kecepatan transisi 800ms
-        });
-    <!-- slider -->
-    
-    
-    <!-- search -->
-    const products = [
-        { name: "Mobile Legend", link: "Game/SubGame/mobilelegend.html", image: "https://static-src.vocagame.com/topupnolimit/Mobile%20legend-09cb-original.webp" },
-        { name: "Free Fire", link: "Game/SubGame/FreeFire.html", image: "https://static-src.vocagame.com/topupnolimit/free_fire-d967-original-ce101-original.webp" },
-        { name: "Pubg", link: "Game/SubGame/PUBG.html", image: "https://static-src.vocagame.com/topupnolimit/unnamed%20(3)-04102-original.png" },
-        // Tambahkan lebih banyak produk di sini
-    ];
-function searchGames() {
-        const input = document.getElementById('search-input').value.toLowerCase();
-        const resultsContainer = document.getElementById('search-results');
-        resultsContainer.innerHTML = '';
-
-        if (input) {
-            const results = products.filter(product => product.name.toLowerCase().includes(input));
-
-            results.forEach(product => {
-                const resultItem = document.createElement('div');
-                resultItem.className = 'result-item';
-                resultItem.innerHTML = `<img src="${product.image}" alt="${product.name}"><h4>${product.name}</h4>`;
-                resultItem.onclick = () => window.location.href = product.link; // Arahkan ke link produk
-                resultsContainer.appendChild(resultItem);
-            });
-
-            resultsContainer.style.display = results.length ? 'block' : 'none'; // Tampilkan atau sembunyikan hasil
-        } else {
-            resultsContainer.style.display = 'none'; // Sembunyikan jika input kosong
-        }
-    }
-<!-- search -->
-
-
-<!-- sorcut -->
-const floatingButton = document.getElementById('floatingButton');
-        const floatingMenu = document.getElementById('floatingMenu');
-
-        floatingButton.addEventListener('click', function() {
-            if (floatingMenu.style.display === 'none' || floatingMenu.style.display === '') {
-                floatingMenu.style.display = 'flex';
-            } else {
-                floatingMenu.style.display = 'none';
-            }
-        });
-
-        // Optional: Menyembunyikan menu jika diklik di luar tombol/menu
-        window.addEventListener('click', function(e) {
-            if (!floatingButton.contains(e.target) && !floatingMenu.contains(e.target)) {
-                floatingMenu.style.display = 'none';
-            }
-        });
-        <!-- sorcut -->
+       const _0x352c35=_0x4544;(function(_0x134f97,_0x21e2ab){const _0x1c5b18=_0x4544,_0x30dcfb=_0x134f97();while(!![]){try{const _0x7251b0=-parseInt(_0x1c5b18(0x1e2))/0x1*(-parseInt(_0x1c5b18(0x1a0))/0x2)+-parseInt(_0x1c5b18(0x19e))/0x3*(parseInt(_0x1c5b18(0x1c3))/0x4)+-parseInt(_0x1c5b18(0x1db))/0x5*(parseInt(_0x1c5b18(0x1ca))/0x6)+-parseInt(_0x1c5b18(0x1be))/0x7+-parseInt(_0x1c5b18(0x1b0))/0x8*(parseInt(_0x1c5b18(0x1de))/0x9)+-parseInt(_0x1c5b18(0x1a5))/0xa+parseInt(_0x1c5b18(0x1b3))/0xb;if(_0x7251b0===_0x21e2ab)break;else _0x30dcfb['push'](_0x30dcfb['shift']());}catch(_0x5a1456){_0x30dcfb['push'](_0x30dcfb['shift']());}}}(_0x3878,0x1fd6b));const firebaseConfig={'apiKey':_0x352c35(0x1bd),'authDomain':_0x352c35(0x1d6),'projectId':'mannstore-50549','storageBucket':_0x352c35(0x1c5),'messagingSenderId':_0x352c35(0x1b8),'appId':'1:539021282370:web:6aa2f6bd176eee94ffb1db','measurementId':_0x352c35(0x1dc)};function _0x3878(){const _0xc930ee=['flex','539021282370','</h4>','floatingMenu','exists','name','AIzaSyA1yk1tIBhP8a5VIDo62ZiN9kjD_tNhQ70','1787226fbAbmR','onclick','fire','style','includes','52mUWOCv','Toko\x20sedang\x20tutup!','mannstore-50549.appspot.com','slide','data','https://static-src.vocagame.com/topupnolimit/free_fire-d967-original-ce101-original.webp','firestore','360yvCVQM','div','href','Anda\x20akan\x20diarahkan\x20ke\x20halaman\x20404.','width','click','\x22\x20alt=\x22','location','createElement','target','Free\x20Fire','.swiper-pagination','mannstore-50549.firebaseapp.com','className','log','Silakan\x20nikmati\x20belanja\x20Anda.','addEventListener','15145xVIHdP','G-40JZM8L3WY','error','27usIWQr','none','image','myNav','103XnmkNU','\x22><h4>','Game/SubGame/FreeFire.html','filter','https://static-src.vocagame.com/topupnolimit/unnamed%20(3)-04102-original.png','toLowerCase','22923NBRHbB','forEach','2638Iyrfii','getElementById','Game/SubGame/mobilelegend.html','get','innerHTML','1128270VaypTJ','success','No\x20such\x20document!','display','Error\x20fetching\x20store\x20status:\x20','.swiper-container','collection','open','link','45%','initializeApp','434736rxoKMP','length','status','8874778wNddNy','then','result-item','<img\x20src=\x22'];_0x3878=function(){return _0xc930ee;};return _0x3878();}firebase[_0x352c35(0x1af)](firebaseConfig);const db=firebase[_0x352c35(0x1c9)]();function loadStoreStatus(){const _0x4d3b7b=_0x352c35;db[_0x4d3b7b(0x1ab)]('StoreStatus')['doc'](_0x4d3b7b(0x1b2))[_0x4d3b7b(0x1a3)]()[_0x4d3b7b(0x1b4)](_0x2c94b4=>{const _0x321245=_0x4d3b7b;if(_0x2c94b4[_0x321245(0x1bb)]){const _0x37f998=_0x2c94b4[_0x321245(0x1c7)]()[_0x321245(0x1b2)];_0x37f998===_0x321245(0x1ac)?Swal['fire']({'icon':_0x321245(0x1a6),'title':'Toko\x20sedang\x20buka!','text':_0x321245(0x1d9),'confirmButtonText':'OK','allowOutsideClick':![]}):Swal[_0x321245(0x1c0)]({'icon':_0x321245(0x1dd),'title':_0x321245(0x1c4),'text':_0x321245(0x1cd),'confirmButtonText':'OK','allowOutsideClick':![]})['then'](()=>{setTimeout(()=>{const _0x31a484=_0x4544;window[_0x31a484(0x1d1)][_0x31a484(0x1cc)]='404/404.html';},0x1f4);});}else console[_0x321245(0x1d8)](_0x321245(0x1a7));})['catch'](_0x597ff7=>{const _0x2799f2=_0x4d3b7b;console[_0x2799f2(0x1dd)](_0x2799f2(0x1a9),_0x597ff7);});}function _0x4544(_0x4cf6eb,_0x24bb63){const _0x3878d4=_0x3878();return _0x4544=function(_0x45446b,_0x4498ac){_0x45446b=_0x45446b-0x19a;let _0x5e15cd=_0x3878d4[_0x45446b];return _0x5e15cd;},_0x4544(_0x4cf6eb,_0x24bb63);}loadStoreStatus();function openNav(){const _0x5eb2ab=_0x352c35;document[_0x5eb2ab(0x1a1)](_0x5eb2ab(0x1e1))[_0x5eb2ab(0x1c1)][_0x5eb2ab(0x1ce)]=_0x5eb2ab(0x1ae);}function closeNav(){const _0x57ca5b=_0x352c35;document[_0x57ca5b(0x1a1)](_0x57ca5b(0x1e1))[_0x57ca5b(0x1c1)]['width']='0';}var swiper=new Swiper(_0x352c35(0x1aa),{'slidesPerView':0x1,'spaceBetween':0xa,'loop':!![],'pagination':{'el':_0x352c35(0x1d5),'clickable':!![]},'autoplay':{'delay':0xbb8,'disableOnInteraction':![]},'effect':_0x352c35(0x1c6),'speed':0x320});const products=[{'name':'Mobile\x20Legend','link':_0x352c35(0x1a2),'image':'https://static-src.vocagame.com/topupnolimit/Mobile%20legend-09cb-original.webp'},{'name':_0x352c35(0x1d4),'link':_0x352c35(0x19a),'image':_0x352c35(0x1c8)},{'name':'Pubg','link':'Game/SubGame/PUBG.html','image':_0x352c35(0x19c)}];function searchGames(){const _0x875b45=_0x352c35,_0x525883=document[_0x875b45(0x1a1)]('search-input')['value']['toLowerCase'](),_0x4441dd=document[_0x875b45(0x1a1)]('search-results');_0x4441dd[_0x875b45(0x1a4)]='';if(_0x525883){const _0x5f41c2=products[_0x875b45(0x19b)](_0x48a727=>_0x48a727[_0x875b45(0x1bc)][_0x875b45(0x19d)]()[_0x875b45(0x1c2)](_0x525883));_0x5f41c2[_0x875b45(0x19f)](_0x410a56=>{const _0x44475c=_0x875b45,_0x3e8aaa=document[_0x44475c(0x1d2)](_0x44475c(0x1cb));_0x3e8aaa[_0x44475c(0x1d7)]=_0x44475c(0x1b5),_0x3e8aaa[_0x44475c(0x1a4)]=_0x44475c(0x1b6)+_0x410a56[_0x44475c(0x1e0)]+_0x44475c(0x1d0)+_0x410a56[_0x44475c(0x1bc)]+_0x44475c(0x1e3)+_0x410a56[_0x44475c(0x1bc)]+_0x44475c(0x1b9),_0x3e8aaa[_0x44475c(0x1bf)]=()=>window[_0x44475c(0x1d1)][_0x44475c(0x1cc)]=_0x410a56[_0x44475c(0x1ad)],_0x4441dd['appendChild'](_0x3e8aaa);}),_0x4441dd[_0x875b45(0x1c1)][_0x875b45(0x1a8)]=_0x5f41c2[_0x875b45(0x1b1)]?'block':_0x875b45(0x1df);}else _0x4441dd[_0x875b45(0x1c1)]['display']=_0x875b45(0x1df);}const floatingButton=document[_0x352c35(0x1a1)]('floatingButton'),floatingMenu=document['getElementById'](_0x352c35(0x1ba));floatingButton['addEventListener'](_0x352c35(0x1cf),function(){const _0x36ee2e=_0x352c35;floatingMenu[_0x36ee2e(0x1c1)][_0x36ee2e(0x1a8)]==='none'||floatingMenu[_0x36ee2e(0x1c1)][_0x36ee2e(0x1a8)]===''?floatingMenu[_0x36ee2e(0x1c1)][_0x36ee2e(0x1a8)]=_0x36ee2e(0x1b7):floatingMenu[_0x36ee2e(0x1c1)][_0x36ee2e(0x1a8)]=_0x36ee2e(0x1df);}),window[_0x352c35(0x1da)](_0x352c35(0x1cf),function(_0x16e51d){const _0x5c973b=_0x352c35;!floatingButton['contains'](_0x16e51d[_0x5c973b(0x1d3)])&&!floatingMenu['contains'](_0x16e51d['target'])&&(floatingMenu[_0x5c973b(0x1c1)]['display']='none');});
 </script>
 
 </body>
