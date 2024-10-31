@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mann Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #34495e, #2c3e50, #1d1d1d);
+
+            color: white;
+        }
+        /* Header */
+       header {
+    background: linear-gradient(135deg, #1f1f1f, #333333);
+    padding: 10px 20px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #f2f2f2;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+    margin-top: -5px;
+}
+
+header:hover {
+    background: linear-gradient(135deg, #333333, #1f1f1f);
+    
+}
+
+        
+     #populer {
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px; /* Larger, more readable font */
+    font-weight: bold;
+    color: white;
+    padding: 8px 20px;
+    text-align: center;
+    
+    /* Updated margin */ margin: 10px 0 10px 10px; /* Adds 15px margin on the left */
+
+    background: linear-gradient(135deg, rgba(102, 153, 255, 0.9), rgba(0, 102, 204, 0.9));
+    border-radius: 25px; /* Curved look for a softer appearance */
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+
+    /* Shadow for depth */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+    /* Add slight animation */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#populer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.15); /* Lighter effect */
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+}
+
+#populer:hover::before {
+    left: 100%; /* Moves shine effect on hover */
+}
+
+#populer:hover {
+    transform: scale(1.05); /* Slight scaling effect */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+
+        
+        
+        .hamburger {
+            font-size: 27px;
+            cursor: pointer;
+            color: #bfeaff;
+            margin-right: 8px;
+        }
+     .search-bar {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #333, #444); /* Gradien halus */
+    border-radius: 8px;
+    padding: 5px 10px;
+    max-width: 250px;
+    margin-left: 20px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Bayangan untuk efek kedalaman */
+    transition: background 0.3s ease;
+}
+
+.search-bar:hover {
+    background: linear-gradient(135deg, #444, #555); /* Sedikit perubahan warna saat hover */
+}
+
+.search-bar input {
+    border: none;
+    background: none;
+    color: #ddd;
+    padding: 5px 10px 5px 40px;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    border-radius: 8px;
+    transition: color 0.3s ease;
+}
+
+.search-bar input::placeholder {
+    color: #888;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.search-bar input:focus::placeholder {
+    opacity: 0; /* Placeholder menghilang saat input aktif */
+}
+
+.search-bar .fa-search {
+    position: absolute;
+    left: 15px;
+    color: #bbb;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.search-bar button {
+    background: linear-gradient(45deg, #3498db, #2ecc71);
+    
+    border: none;
+    padding: 8px 12px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+}
+
+.search-bar button:hover {
+    background: linear-gradient(45deg, #1e90ff, #00bfff);
+    
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.search-results {
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    border-radius: 8px;
+    padding: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 280px;
+    z-index: 10;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.search-results.show {
+    display: block; /* Tampilkan hasil pencarian */
+    opacity: 1;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.result-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.result-item h4 {
+    font-size: 14px;
+    color: white;
+    margin: 0;
+    font-weight: normal;
+}
+
+.result-item:hover {
+    background-color: #555;
+    cursor: pointer;
+}
+
+
+
+
+      /* Navbar overlay */
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(30, 30, 30, 0.95));
+    overflow-x: hidden;
+    transition: width 0.5s ease;
+    z-index: 1;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.overlay-content {
+    position: relative;
+    top: 20%;
+    width: 100%;
+    text-align: left;
+    padding-left: 30px;
+    transition: transform 0.5s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.overlay-content a {
+    padding: 12px 0;
+    font-size: 22px;
+    color: #f1f1f1;
+    text-decoration: none;
+    display: block;
+    transition: color 0.3s ease, transform 0.3s ease;
+    transform: translateX(-10px); /* Animasi masuk dari kiri */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Garis halus di bawah item */
+}
+
+.overlay-content a:last-child {
+    border-bottom: none; /* Menghilangkan garis di bawah item terakhir */
+}
+
+.overlay-content a:hover {
+    color: #f39c12;
+    transform: translateX(5px); /* Sedikit pergeseran saat hover */
+}
+
+
+.overlay-content .daftar-btn {
+    background-color: #f39c12;
+    padding: 12px 25px;
+    border-radius: 5px;
+    color: white;
+    margin-top: 25px;
+    font-weight: bold;
+    display: inline-block;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.overlay-content .daftar-btn:hover {
+    background-color: #e67e22;
+    transform: scale(1.05); /* Perbesar sedikit saat hover */
+}
+
+.overlay .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    font-size: 35px;
+    color: #f1f1f1;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.overlay .closebtn:hover {
+    color: #f39c12;
+}
+
+/* Set 50% screen for menu */
+.overlay-half {
+    width: 0;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.95));
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+    z-index: 20;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.overlay-half .overlay-content {
+    top: 15%;
+}
+
+/* Animasi smooth saat overlay terbuka */
+.overlay-open .overlay-content {
+    transform: translateX(0);
+}
+
+
+    /* Footer */
+footer {
+    background: linear-gradient(135deg, #1a1a2e, #1c1c1c);
+    color: #dcdcdc;
+    padding: 60px 20px;
+    font-family: 'Roboto', sans-serif;
+    border-top: 2px solid #333;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Container */
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Footer Logo */
+.footer-logo {
+    text-align: left;
+}
+
+.footer-logo h2 {
+    font-size: 23px;
+    font-weight: bold;
+    color: #4a90e2; /* Modern blue accent */
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.footer-logo p {
+    max-width: 400px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #bfbfbf;
+}
+
+/* Footer Links */
+.footer-links {
+    display: flex;
+    justify-content: space-around;
+    gap: 40px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+}
+
+.footer-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: #4a90e2;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+
+.footer-links a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Footer Social Links */
+.footer-social {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer-social a {
+    color: #4a90e2;
+    margin: 0 10px;
+    font-size: 24px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-social a:hover {
+    color: white;
+    transform: scale(1.2);
+}
+
+/* Footer Legal Section */
+.footer-legal {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 13px;
+    color: #888;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+}
+
+.footer-legal p:hover {
+    color: #4a90e2;
+}
+
+        
+      .overlay-half .closebtn {
+    position: absolute;
+    top: 20px;
+    left: 10px; /* Adjusted right position */
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none; /* Ensure no underline */
+    padding: 5px; /* Add some padding for better click area */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.overlay-half .closebtn:hover {
+    color: #f39c12; /* Change color on hover */
+    transform: scale(1.2); /* Enlarge slightly on hover */
+}
+
+/* Game Products Section */
+.product-section {
+    padding: 10px;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.product-card {
+    background: rgba(102, 85, 255, 0.9); /* Background for the card */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    height: 160px; /* Fixed height */
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(5px); /* Optional: adds blur for a modern look */
+    position: relative; /* Ensure child elements are positioned correctly */
+}
+
+.product-card img {
+    width: 100%;
+    height: 100%; /* Fill the height of the card */
+    object-fit: cover;
+    filter: brightness(90%); /* Darkens the image slightly for readability */
+}
+
+.product-card h3 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px; /* Increased font size for better readability */
+    margin: 0; /* Reset margin for better positioning */
+    text-align: center;
+    color: white;
+    position: absolute; /* Position title over the image */
+    bottom: 0; /* Align to the bottom */
+    left: 0;
+    right: 0; /* Center the title */
+    
+    padding: 0; /* Reset padding */
+    height: 42px; /* Fixed height for the title */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background: #030e124f; /* Transparent white background */
+    border-radius: 0 0 10px 10px; /* Rounded corners at the bottom only */
+    backdrop-filter: blur(2px); /* Blur effect for modern look */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); /* Optional: shadow for depth */
+    border-radius: 5px;
+}
+
+
+.product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+  /* Slider Container */
+        .slider {
+            width: 100vw;            /* Full width of viewport */
+            max-width: 95vw;         /* Maksimum lebar slider relatif terhadap viewport */
+            position: block;              
+            overflow: hidden;
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+
+        .swiper-container {
+            width: 100%;             /* Lebar penuh container */
+            height: 45vw;            /* Tinggi relatif terhadap viewport width */
+            position: relative;
+        }
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center; /* Menyelaraskan konten di tengah horisontal */
+            align-items: center;     /* Menyelaraskan konten di tengah vertikal */
+        }
+
+        .swiper-slide img {
+            width: 100%;             /* Memastikan gambar mengambil 100% lebar slide */
+            height: 100%;            /* Menyesuaikan tinggi gambar dengan container */
+            object-fit: cover;       /* Memastikan gambar menyesuaikan tanpa distorsi */
+            border-radius: 8px;      /* Sudut gambar melengkung */
+        }
+
+        /* Style untuk pagination (titik-titik) */
+        .swiper-pagination {
+            position: absolute;
+            bottom: 10px;            /* Letakkan di bagian bawah gambar */
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            opacity: 0.5;
+            border-radius: 50%;
+            margin: 0 6px;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: blue;      /* Warna aktif saat slide aktif */
+            opacity: 1;
+        }
+        
+.quick-access {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 10px 15px;
+    position: sticky;
+    top: 0;
+    background: linear-gradient(135deg, rgba(90, 155, 217, 0.8), rgba(0, 102, 204, 0.7)); /* Modern gradient blue */
+    z-index: 5;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+}
+
+.quick-access a {
+    color: #2ad5ff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    background-color: #00283b;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.quick-access a:hover {
+    color: white;
+    transform: scale(1.05); /* Slightly enlarge on hover for interaction */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: #ffcc00;
+}
+
+
+  /* Style untuk tombol mengambang */
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3880a9;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+
+        .floating-button:hover {
+            background-color: #3eaab9;
+        }
+
+       
+       /* Style for modern floating menu */
+.floating-menu {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 999;
+}
+
+.floating-menu a {
+    background-color: #2D2D2D;
+    color: #FFF;
+    padding: 15px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.floating-menu a:hover {
+    background-color: #555;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.floating-menu a i {
+    font-size: 20px;
+    color: #5eacbb; /* Gold color for icon to make it pop */
+}
+
+
+ @keyframes flash {
+        0% {
+            filter: brightness(1);
+        }
+        50% {
+            filter: brightness(1.5); /* Meningkatkan kecerahan */
+        }
+        100% {
+            filter: brightness(1);
+        }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+    <span class="hamburger" onclick="openNav()">
+        <i class="fas fa-bars"></i>
+    </span>
+    
+   <img src="man.png" alt="AhsanStore" style="width: 150px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); animation: flash 1s infinite alternate;">
+
+
+   
+
+
+
+     
+  <div class="search-bar"> <i class="fas fa-search"></i> <input type="text" id="search-input" placeholder="Cari game..." oninput="searchGames()"> <button>Cari</button> <div id="search-results" class="search-results"></div> <!-- Modal hasil pencarian --> </div>
+
+   
+</header>
+<div class="search-results" id="searchResults"></div>
+<center>
+  <!-- Slider Container -->
+    <div class="slider">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- Slide 1 -->
+                <div class="swiper-slide">
+                    <img src="1.png" alt="Slide 1">
+                </div>
+                <!-- Slide 2 -->
+                <div class="swiper-slide">
+                    <img src="https://assets.motopup.id/2023/09/93ac66606a6335d2bb12e1d5d2bb305c.png" alt="Slide 2">
+                </div>
+                <!-- Slide 3 -->
+                <div class="swiper-slide">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9lVaQWZThxEvQwwhaQBKzZKFmMCJ1zWCrXtDXxnxIMJizK5JUwLTnE3w&s=10" alt="Slide 3">
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</center>
+
+ <nav class="quick-access">
+        <a href="#populer">Populer</a>
+        <a href="#terlaris">Terlaris</a>
+        <a href="#voucher">Voucher</a>
+    </nav>
+
+
+<!-- Overlay menu (50% screen) -->
+<div id="myNav" class="overlay-half">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="overlay-content">
+    <a href="#"><i class="fas fa-home"></i> Beranda</a>
+    <a href="menu/layanan.html"><i class="fas fa-concierge-bell"></i> Layanan</a>
+    <a href="menu/about.html"><i class="fas fa-info-circle"></i> About</a>
+    <a href="menu/contact.html"><i class="fas fa-envelope"></i> Kontak</a>
+</div>
+
+</div>
+
+<main>
+    <section style="min-height: 270px;">
+        
+       
+<!-- Bagian Populer -->
+<h3 id="populer">Populer :</h3>
+
+
+                
+        <section class="product-section">
+            
+
+    <div class="product-card">
+        <a href="https://ahsan-store-github-io.vercel.app/Game/SubGame/mobilelegend.html" target="_blank">
+            <img src="https://static-src.vocagame.com/topupnolimit/Mobile%20legend-09cb-original.webp" alt="Game 1">
+            <h3>Mobile Legend</h3>
+        </a>
+    </div>
+
+    <div class="product-card">
+        <a href="https://ahsan-store-github-io.vercel.app/Game/SubGame/FreeFire.html" target="_blank">
+            <img src="https://static-src.vocagame.com/topupnolimit/free_fire-d967-original-ce101-original.webp" alt="Game 2">
+            <h3>Free Fire</h3>
+        </a>
+    </div>
+
+    <div class="product-card">
+        <a href="https://ahsan-store-github-io.vercel.app/Game/SubGame/PUBG.html" target="_blank">
+            <img src="https://static-src.vocagame.com/topupnolimit/unnamed%20(3)-04102-original.png" alt="Game 3">
+            <h3>Pubg</h3>
+        </a>
+    </div>
+</div>
+
+</section>
+</section>
+
+</main>
+
+ <!-- Tombol Mengambang -->
+<button class="floating-button" id="floatingButton">
+    <i class="fas fa-cog text-xl"></i>
+</button>
+
+<!-- Menu Shortcut -->
+<div class="floating-menu" id="floatingMenu">
+    <a href="menu/riwayat.html">
+        <i class="fas fa-history"></i> History
+    </a>
+    <a href="https://wa.me/6285778244669" target="_blank">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+  
+    <a href="menu/testimino.html"> <!-- Link to the testimonials page -->
+        <i class="fas fa-star"></i> Testimonials
+    </a>
+</div>
+
+<!-- Keterangan Text -->
+<div class="floating-description" id="floatingDescription">
+    
+</div>
+
+
+
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <h2>Mann Store</h2>
+            <p>MannStore adalah website top up murah, cepat, terpercaya dengan banyak pilihan produk, melayani transaksi 24 jam, dan dengan metode pembayaran terlengkap.</p>
+        </div>
+        <div class="footer-links">
+            <ul>
+                <li><a href="menu/bantuan.html">Bantuan</a></li>
+                
+                <li><a href="menu/legal.html">Legal</a></li>
+            </ul>
+            <ul>
+                <li><a href="menu/syarat.html">Syarat & Ketentuan</a></li>
+                <li><a href="menu/kebijakan.html">Kebijakan Privasi</a></li>
+               
+            </ul>
+        </div>
+       <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/mann321_?igsh=cDVkc2hlMHR0cWZh"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="footer-legal">
+            <p>&copy; 2024 MannStore Semua hak cipta dilindungi.</p>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+    <script>
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyA1yk1tIBhP8a5VIDo62ZiN9kjD_tNhQ70",
+  authDomain: "mannstore-50549.firebaseapp.com",
+  projectId: "mannstore-50549",
+  storageBucket: "mannstore-50549.appspot.com",
+  messagingSenderId: "539021282370",
+  appId: "1:539021282370:web:6aa2f6bd176eee94ffb1db",
+  measurementId: "G-40JZM8L3WY"
+};
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Mengambil status toko dari Firestore
+        function loadStoreStatus() {
+            db.collection('StoreStatus').doc('status').get().then((doc) => {
+                if (doc.exists) {
+                    const storeStatus = doc.data().status;
+
+                    // Menampilkan pesan menggunakan SweetAlert2
+if (storeStatus === 'open') {
+    Swal.fire({
+        icon: 'success',
+        title: 'Toko sedang buka!',
+        text: 'Silakan nikmati belanja Anda.',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false // Mencegah menutup saat klik di luar
+    });
+} else {
+    Swal.fire({
+        icon: 'error',
+        title: 'Toko sedang tutup!',
+        text: 'Anda akan diarahkan ke halaman 404.',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false // Mencegah menutup saat klik di luar
+    }).then(() => {
+        setTimeout(() => {
+            window.location.href = "404/404.html"; // Ganti dengan URL halaman 404 Anda
+        }, 500); // 0.5 detik sebelum diarahkan
+    });
+}
+
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch((error) => {
+                console.error("Error fetching store status: ", error);
+            });
+        }
+
+        // Panggil fungsi untuk memuat status toko saat halaman dimuat
+        loadStoreStatus();
+    
+    function openNav() {
+        document.getElementById("myNav").style.width = "45%";
+    }
+
+    function closeNav() {
+        document.getElementById("myNav").style.width = "0";
+    }
+    
+    <!-- slider -->
+     var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,           // Menampilkan 1 slide setiap kali
+            spaceBetween: 10,           // Jarak antar slide
+            loop: true,                 // Slider akan melingkar (loop)
+            pagination: {
+                el: '.swiper-pagination',  // Mengaktifkan pagination titik-titik
+                clickable: true,           // Membuat pagination dapat diklik
+            },
+            autoplay: {
+                delay: 3000,                // Auto-slide setiap 3 detik
+                disableOnInteraction: false  // Lanjutkan autoplay setelah interaksi
+            },
+            effect: 'slide',                // Efek transisi
+            speed: 800                      // Kecepatan transisi 800ms
+        });
+    <!-- slider -->
+    
+    
+    <!-- search -->
+    const products = [
+        { name: "Mobile Legend", link: "Game/SubGame/mobilelegend.html", image: "https://static-src.vocagame.com/topupnolimit/Mobile%20legend-09cb-original.webp" },
+        { name: "Free Fire", link: "Game/SubGame/FreeFire.html", image: "https://static-src.vocagame.com/topupnolimit/free_fire-d967-original-ce101-original.webp" },
+        { name: "Pubg", link: "Game/SubGame/PUBG.html", image: "https://static-src.vocagame.com/topupnolimit/unnamed%20(3)-04102-original.png" },
+        // Tambahkan lebih banyak produk di sini
+    ];
+function searchGames() {
+        const input = document.getElementById('search-input').value.toLowerCase();
+        const resultsContainer = document.getElementById('search-results');
+        resultsContainer.innerHTML = '';
+
+        if (input) {
+            const results = products.filter(product => product.name.toLowerCase().includes(input));
+
+            results.forEach(product => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `<img src="${product.image}" alt="${product.name}"><h4>${product.name}</h4>`;
+                resultItem.onclick = () => window.location.href = product.link; // Arahkan ke link produk
+                resultsContainer.appendChild(resultItem);
+            });
+
+            resultsContainer.style.display = results.length ? 'block' : 'none'; // Tampilkan atau sembunyikan hasil
+        } else {
+            resultsContainer.style.display = 'none'; // Sembunyikan jika input kosong
+        }
+    }
+<!-- search -->
+
+
+<!-- sorcut -->
+const floatingButton = document.getElementById('floatingButton');
+        const floatingMenu = document.getElementById('floatingMenu');
+
+        floatingButton.addEventListener('click', function() {
+            if (floatingMenu.style.display === 'none' || floatingMenu.style.display === '') {
+                floatingMenu.style.display = 'flex';
+            } else {
+                floatingMenu.style.display = 'none';
+            }
+        });
+
+        // Optional: Menyembunyikan menu jika diklik di luar tombol/menu
+        window.addEventListener('click', function(e) {
+            if (!floatingButton.contains(e.target) && !floatingMenu.contains(e.target)) {
+                floatingMenu.style.display = 'none';
+            }
+        });
+        <!-- sorcut -->
+</script>
+
+</body>
+</html>

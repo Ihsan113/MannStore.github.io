@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cetak Struk Orderan - RizShop</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff; /* Changed to white for better printing */
+            color: #000000; /* Black text for better contrast */
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: none; /* Removed shadow for print */
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border-radius: 5px;
+            border: 2px solid #000000; /* Black border */
+            width: 320px;
+            background-color: #f0f0f0; /* Light gray background */
+            color: #000;
+            outline: none;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #444444; /* Darker border on focus */
+        }
+
+        button {
+            padding: 12px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        canvas {
+            display: none; /* Hide the canvas element */
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <h1>Cetak Struk Orderan - AhsanStore</h1>
+
+    <div class="form-container">
+        <input type="text" id="orderId" placeholder="Masukkan Order ID...">
+        <button onclick="generateReceipt()">Cetak Struk</button>
+    </div>
+
+    <canvas id="receiptCanvas" width="600" height="900"></canvas> <!-- Increased size for HD -->
+
+    <script>
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyA1yk1tIBhP8a5VIDo62ZiN9kjD_tNhQ70",
+  authDomain: "mannstore-50549.firebaseapp.com",
+  projectId: "mannstore-50549",
+  storageBucket: "mannstore-50549.appspot.com",
+  messagingSenderId: "539021282370",
+  appId: "1:539021282370:web:6aa2f6bd176eee94ffb1db",
+  measurementId: "G-40JZM8L3WY"
+};
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        async function generateReceipt() {
+            const orderId = document.getElementById('orderId').value.trim();
+
+            if (orderId === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Kesalahan',
+                    text: 'Masukkan Order ID.',
+                    confirmButtonColor: '#4CAF50'
+                });
+                return;
+            }
+
+            const doc = await db.collection('Orders').doc(orderId).get();
+            if (doc.exists) {
+                const orderData = doc.data();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: 'Struk berhasil dihasilkan!',
+                    confirmButtonColor: '#4CAF50'
+                });
+                // Tampilkan struk dalam PNG
+                drawReceipt(orderData);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Kesalahan',
+                    text: 'Order ID tidak ditemukan.',
+                    confirmButtonColor: '#4CAF50'
+                });
+            }
+        }
+
+        function drawReceipt(orderData) {
+            const canvas = document.getElementById('receiptCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Set background color
+            ctx.fillStyle = "#ffffff"; // White background
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw receipt elements
+            ctx.fillStyle = "#000000"; // Black text color
+            ctx.font = "24px Poppins"; // Larger font for HD
+            ctx.fillText("AhsanStore", 50, 40); // Centered logo title
+            ctx.font = "20px Poppins"; 
+            ctx.fillText("Orderan Berhasil", 50, 70);
+            ctx.fillStyle = "#000000"; // Black color for lines
+            ctx.fillRect(20, 90, 560, 2); // Top separator line
+
+            ctx.fillStyle = "#000000"; // Black text color
+            ctx.font = "16px Poppins"; // Consistent font size
+            ctx.fillText(`Order ID: ${orderData.combinedId}`, 50, 120);
+            ctx.fillText(`Produk: ${orderData.productName}`, 50, 150);
+            ctx.fillText(`Nama Game: ${orderData.gameName || 'N/A'}`, 50, 180);
+            ctx.fillText(`Metode Pembayaran: ${orderData.paymentMethod}`, 50, 210);
+            ctx.fillText(`Nomor Telepon: ${orderData.phoneNumber}`, 50, 240);
+            ctx.fillText(`Status: ${orderData.status}`, 50, 270);
+            ctx.fillText(`Tanggal Pesanan: ${new Date(orderData.timestamp.toDate()).toLocaleString()}`, 50, 300);
+            
+            ctx.fillRect(20, 330, 560, 2); // Bottom separator line
+
+            ctx.fillText("Terima Kasih Telah Berbelanja!", 50, 360);
+
+            // Show success alert with download button
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: 'Struk berhasil dihasilkan!',
+                showCancelButton: true,
+                confirmButtonColor: '#4CAF50',
+                cancelButtonText: 'Tutup',
+                confirmButtonText: 'Unduh Struk',
+                preConfirm: () => {
+                    // Download the canvas as PNG
+                    const link = document.createElement('a');
+                    link.download = 'struk_order_AhsanStore.png';
+                    link.href = canvas.toDataURL('image/png', 1.0); // High-quality PNG
+                    link.click();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

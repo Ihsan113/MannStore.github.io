@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+    <title>Struk Pembayaran dan Testimonial</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .receipt-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .receipt-details {
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 5px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #28a745;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #28a745;
+            cursor: pointer;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <!-- Bagian untuk menampilkan detail struk pembayaran -->
+        <h1>Struk Pembayaran</h1>
+        <div id="receiptDetails" class="receipt-details"></div>
+        <p style="text-align: center; color: #555;">Pesanan sedang diproses secara manual. Mohon tunggu sekitar 1-5 menit.</p>
+        <button id="printButton">Cetak Struk</button>
+        
+        <!-- Bagian untuk mengirimkan testimonial -->
+        <h2>Komentar Anda</h2>
+        <div class="form-group">
+            <label for="phoneNumber">Nomor Telepon (Wajib)</label>
+            <input type="text" id="phoneNumber" class="form-control" placeholder="Masukkan nomor telepon" required>
+        </div>
+
+        <div class="form-group">
+            <label for="rating">Rating (1-5)</label>
+            <input type="range" id="rating" class="slider" min="1" max="5" value="3">
+            <p style="text-align: center;" id="ratingValue">Rating: 3</p>
+        </div>
+
+        <div class="form-group">
+            <label for="comment">Komentar Anda</label>
+            <textarea id="comment" class="form-control" rows="4" placeholder="Tulis komentar Anda" required></textarea>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitTestimonial()">Kirim Testimonial</button>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script>
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyA1yk1tIBhP8a5VIDo62ZiN9kjD_tNhQ70",
+  authDomain: "mannstore-50549.firebaseapp.com",
+  projectId: "mannstore-50549",
+  storageBucket: "mannstore-50549.appspot.com",
+  messagingSenderId: "539021282370",
+  appId: "1:539021282370:web:6aa2f6bd176eee94ffb1db",
+  measurementId: "G-40JZM8L3WY"
+};
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const orderId = new URLSearchParams(window.location.search).get('orderId');
+
+        // Menampilkan detail struk
+        function displayReceiptDetails(orderId) {
+            const receiptDetailsContainer = document.getElementById('receiptDetails');
+            db.collection('Orders').doc(orderId).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const orderData = doc.data();
+                        receiptDetailsContainer.innerHTML = `
+                            <p><strong>Tujuan Pengguna:</strong> ${orderData.combinedId}</p>
+                            <p><strong>Produk:</strong> ${orderData.productName} - Rp${orderData.productPrice}</p>
+                            <p><strong>Metode Pembayaran:</strong> ${orderData.paymentMethod}</p>
+                            <p><strong>Nomor Telepon:</strong> ${orderData.phoneNumber}</p>
+                            <p><strong>Nama Game:</strong> ${orderData.gameName}</p>
+                            <p><strong>Tanggal Pesanan:</strong> ${new Date(orderData.timestamp.toDate()).toLocaleString()}</p>
+                            <p><strong>Bukti Pembayaran:</strong> <a href="${orderData.paymentProof}" target="_blank">Lihat Bukti</a></p>
+                        `;
+                    } else {
+                        receiptDetailsContainer.innerHTML = `<p>Pesanan tidak ditemukan.</p>`;
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching order details: ", error);
+                    receiptDetailsContainer.innerHTML = `<p>Terjadi kesalahan saat mengambil informasi pesanan.</p>`;
+                });
+        }
+
+        // Function to submit testimonial
+        function submitTestimonial() {
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const rating = document.getElementById('rating').value; // Mengambil rating dari slider
+            const comment = document.getElementById('comment').value.trim();
+
+            if (phoneNumber === "" || comment === "") {
+                swal("Error", "Semua field harus diisi.", "error");
+                return;
+            }
+
+            db.collection('Testimonials').add({
+                orderId: orderId,
+                phoneNumber: phoneNumber,
+                rating: parseInt(rating), // Mengirim rating ke Firebase sebagai integer
+                comment: comment,
+                timestamp: new Date()
+            }).then(() => {
+                swal({
+                    title: "Berhasil!",
+                    text: "Testimonial berhasil dikirim.",
+                    icon: "success",
+                    buttons: ["Kembali", "OK"]
+                }).then((willRedirect) => {
+                    if (willRedirect) {
+                        window.location.href = "https://ahsan-store-github-io.vercel.app/";
+                    }
+                });
+                // Clear the inputs
+                document.getElementById('phoneNumber').value = '';
+                document.getElementById('rating').value = 3; // Reset slider ke nilai default
+                document.getElementById('ratingValue').innerText = "Rating: 3"; // Reset rating text
+                document.getElementById('comment').value = '';
+            }).catch((error) => {
+                console.error("Error adding testimonial: ", error);
+            });
+        }
+
+        // Update display for rating value
+        document.getElementById('rating').addEventListener('input', function() {
+            document.getElementById('ratingValue').innerText = "Rating: " + this.value
+        });
+
+        // Function to print the receipt
+        document.getElementById('printButton').addEventListener('click', function() {
+            window.print();
+        });
+
+        // Call the function to display the receipt details when the page loads
+        window.onload = function() {
+            if (orderId) {
+                displayReceiptDetails(orderId);
+            } else {
+                document.getElementById('receiptDetails').innerHTML = "<p>Order ID tidak tersedia.</p>";
+            }
+        };
+    </script>
+</body>
+</html>
