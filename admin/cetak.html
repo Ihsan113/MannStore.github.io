@@ -1,44 +1,56 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cetak Struk Orderan - RizShop</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <title>MannStore - Cetak Struk Orderan</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Firebase JS SDK -->
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #ffffff; /* Changed to white for better printing */
-            color: #000000; /* Black text for better contrast */
+            background-color: #f9fafc; 
+            color: #333333;
             margin: 0;
             padding: 20px;
             text-align: center;
         }
 
         h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            text-shadow: none; /* Removed shadow for print */
+            font-size: 26px;
+            color: #4CAF50;
+            margin-bottom: 10px;
         }
 
         .form-container {
+            display: inline-block;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
         input[type="text"] {
             padding: 12px;
             border-radius: 5px;
-            border: 2px solid #000000; /* Black border */
-            width: 320px;
-            background-color: #f0f0f0; /* Light gray background */
-            color: #000;
-            outline: none;
+            border: 2px solid #ddd;
+            width: 300px;
+            background-color: #f3f4f6;
             font-size: 16px;
-            transition: border-color 0.3s;
+            outline: none;
+            transition: all 0.3s;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         input[type="text"]:focus {
-            border-color: #444444; /* Darker border on focus */
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
         }
 
         button {
@@ -48,8 +60,12 @@
             background-color: #4CAF50;
             color: #fff;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
             font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         button:hover {
@@ -57,26 +73,30 @@
             transform: scale(1.05);
         }
 
+        button i {
+            margin-right: 8px;
+        }
+
         canvas {
-            display: none; /* Hide the canvas element */
+            display: none;
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <h1>Cetak Struk Orderan - AhsanStore</h1>
+    <h1><i class="fas fa-receipt"></i> Cetak Struk Orderan - MannStore</h1>
 
     <div class="form-container">
         <input type="text" id="orderId" placeholder="Masukkan Order ID...">
-        <button onclick="generateReceipt()">Cetak Struk</button>
+        <br><br>
+        <button onclick="generateReceipt()"><i class="fas fa-print"></i> Cetak Struk</button>
     </div>
 
-    <canvas id="receiptCanvas" width="600" height="900"></canvas> <!-- Increased size for HD -->
+   
+
+    <canvas id="receiptCanvas" width="600" height="800"></canvas>
 
     <script>
-       const _0x474bfc=_0x237e;(function(_0xd40b38,_0xdfe4e3){const _0x425bab=_0x237e,_0x2dea3b=_0xd40b38();while(!![]){try{const _0x414a68=parseInt(_0x425bab(0x182))/0x1+-parseInt(_0x425bab(0x17e))/0x2+parseInt(_0x425bab(0x16a))/0x3*(-parseInt(_0x425bab(0x194))/0x4)+parseInt(_0x425bab(0x186))/0x5*(parseInt(_0x425bab(0x163))/0x6)+parseInt(_0x425bab(0x180))/0x7+-parseInt(_0x425bab(0x198))/0x8*(-parseInt(_0x425bab(0x17b))/0x9)+-parseInt(_0x425bab(0x16f))/0xa*(parseInt(_0x425bab(0x170))/0xb);if(_0x414a68===_0xdfe4e3)break;else _0x2dea3b['push'](_0x2dea3b['shift']());}catch(_0x4eb249){_0x2dea3b['push'](_0x2dea3b['shift']());}}}(_0x549c,0x7002d));function _0x549c(){const _0x588bb7=['Terima\x20Kasih\x20Telah\x20Berbelanja!','fillStyle','AIzaSyA1yk1tIBhP8a5VIDo62ZiN9kjD_tNhQ70','productName','getElementById','1:539021282370:web:6aa2f6bd176eee94ffb1db','get','178452jJfjHP','receiptCanvas','collection','1205476zndcvM','Kesalahan','5958736YYQKAd','image/png','93488mKhWkb','#4CAF50','24px\x20Poppins','Struk\x20berhasil\x20dihasilkan!','35ormYVl','#ffffff','fillRect','exists','font','click','createElement','Produk:\x20','fillText','Tutup','timestamp','paymentMethod','error','mannstore-50549.firebaseapp.com','40wlSlXM','Masukkan\x20Order\x20ID.','combinedId','Tanggal\x20Pesanan:\x20','80DEffzh','Order\x20ID\x20tidak\x20ditemukan.','mannstore-50549','clearRect','gameName','toDataURL','struk_order_AhsanStore.png','Order\x20ID:\x20','Unduh\x20Struk','Orders','firestore','Metode\x20Pembayaran:\x20','getContext','width','Nama\x20Game:\x20','success','mannstore-50549.appspot.com','phoneNumber','#000000','747906uVrXkU','N/A','toLocaleString','fire','height','539021282370','Sukses','265134uzweKz','20px\x20Poppins','download','AhsanStore','initializeApp','351290EGpYwb','22IUuWZw','G-40JZM8L3WY','toDate','16px\x20Poppins'];_0x549c=function(){return _0x588bb7;};return _0x549c();}const firebaseConfig={'apiKey':_0x474bfc(0x176),'authDomain':_0x474bfc(0x193),'projectId':_0x474bfc(0x19a),'storageBucket':_0x474bfc(0x160),'messagingSenderId':_0x474bfc(0x168),'appId':_0x474bfc(0x179),'measurementId':_0x474bfc(0x171)};firebase[_0x474bfc(0x16e)](firebaseConfig);const db=firebase[_0x474bfc(0x1a2)]();function _0x237e(_0x25a088,_0x43278a){const _0x549c8d=_0x549c();return _0x237e=function(_0x237ea2,_0xab5985){_0x237ea2=_0x237ea2-0x15d;let _0x166265=_0x549c8d[_0x237ea2];return _0x166265;},_0x237e(_0x25a088,_0x43278a);}async function generateReceipt(){const _0xf5c84b=_0x474bfc,_0x413e90=document[_0xf5c84b(0x178)]('orderId')['value']['trim']();if(_0x413e90===''){Swal[_0xf5c84b(0x166)]({'icon':_0xf5c84b(0x192),'title':_0xf5c84b(0x17f),'text':_0xf5c84b(0x195),'confirmButtonColor':_0xf5c84b(0x183)});return;}const _0x3ad13c=await db[_0xf5c84b(0x17d)](_0xf5c84b(0x1a1))['doc'](_0x413e90)[_0xf5c84b(0x17a)]();if(_0x3ad13c[_0xf5c84b(0x189)]){const _0x491f63=_0x3ad13c['data']();Swal[_0xf5c84b(0x166)]({'icon':_0xf5c84b(0x15f),'title':_0xf5c84b(0x169),'text':_0xf5c84b(0x185),'confirmButtonColor':'#4CAF50'}),drawReceipt(_0x491f63);}else Swal[_0xf5c84b(0x166)]({'icon':'error','title':_0xf5c84b(0x17f),'text':_0xf5c84b(0x199),'confirmButtonColor':_0xf5c84b(0x183)});}function drawReceipt(_0x490113){const _0x39c4ca=_0x474bfc,_0x5d5a5d=document[_0x39c4ca(0x178)](_0x39c4ca(0x17c)),_0x5d2a11=_0x5d5a5d[_0x39c4ca(0x1a4)]('2d');_0x5d2a11[_0x39c4ca(0x19b)](0x0,0x0,_0x5d5a5d[_0x39c4ca(0x15d)],_0x5d5a5d[_0x39c4ca(0x167)]),_0x5d2a11[_0x39c4ca(0x175)]=_0x39c4ca(0x187),_0x5d2a11[_0x39c4ca(0x188)](0x0,0x0,_0x5d5a5d[_0x39c4ca(0x15d)],_0x5d5a5d['height']),_0x5d2a11['fillStyle']='#000000',_0x5d2a11[_0x39c4ca(0x18a)]=_0x39c4ca(0x184),_0x5d2a11[_0x39c4ca(0x18e)](_0x39c4ca(0x16d),0x32,0x28),_0x5d2a11[_0x39c4ca(0x18a)]=_0x39c4ca(0x16b),_0x5d2a11['fillText']('Orderan\x20Berhasil',0x32,0x46),_0x5d2a11['fillStyle']=_0x39c4ca(0x162),_0x5d2a11[_0x39c4ca(0x188)](0x14,0x5a,0x230,0x2),_0x5d2a11[_0x39c4ca(0x175)]=_0x39c4ca(0x162),_0x5d2a11[_0x39c4ca(0x18a)]=_0x39c4ca(0x173),_0x5d2a11[_0x39c4ca(0x18e)](_0x39c4ca(0x19f)+_0x490113[_0x39c4ca(0x196)],0x32,0x78),_0x5d2a11['fillText'](_0x39c4ca(0x18d)+_0x490113[_0x39c4ca(0x177)],0x32,0x96),_0x5d2a11['fillText'](_0x39c4ca(0x15e)+(_0x490113[_0x39c4ca(0x19c)]||_0x39c4ca(0x164)),0x32,0xb4),_0x5d2a11[_0x39c4ca(0x18e)](_0x39c4ca(0x1a3)+_0x490113[_0x39c4ca(0x191)],0x32,0xd2),_0x5d2a11[_0x39c4ca(0x18e)]('Nomor\x20Telepon:\x20'+_0x490113[_0x39c4ca(0x161)],0x32,0xf0),_0x5d2a11[_0x39c4ca(0x18e)]('Status:\x20'+_0x490113['status'],0x32,0x10e),_0x5d2a11[_0x39c4ca(0x18e)](_0x39c4ca(0x197)+new Date(_0x490113[_0x39c4ca(0x190)][_0x39c4ca(0x172)]())[_0x39c4ca(0x165)](),0x32,0x12c),_0x5d2a11['fillRect'](0x14,0x14a,0x230,0x2),_0x5d2a11[_0x39c4ca(0x18e)](_0x39c4ca(0x174),0x32,0x168),Swal['fire']({'icon':_0x39c4ca(0x15f),'title':_0x39c4ca(0x169),'text':_0x39c4ca(0x185),'showCancelButton':!![],'confirmButtonColor':_0x39c4ca(0x183),'cancelButtonText':_0x39c4ca(0x18f),'confirmButtonText':_0x39c4ca(0x1a0),'preConfirm':()=>{const _0x3aec8f=_0x39c4ca,_0xbb3f67=document[_0x3aec8f(0x18c)]('a');_0xbb3f67[_0x3aec8f(0x16c)]=_0x3aec8f(0x19e),_0xbb3f67['href']=_0x5d5a5d[_0x3aec8f(0x19d)](_0x3aec8f(0x181),0x1),_0xbb3f67[_0x3aec8f(0x18b)]();}});}
+         function _0x11eb(){const _0x56419a=['2320302mCGJJk','539021282370','trim','Unduh\x20Struk','struk_order_MannStore.png','toDataURL','25nNBlzx','bold\x2028px\x20Poppins','Orders','Produk\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20:\x20','collection','bold\x2020px\x20Poppins','#333','textAlign','center','2389807ZsfsoO','AIzaSyA1yk1tIBhP8a5VIDo62ZiN9kjD_tNhQ70','font','image/png','phoneNumber','11017688LgdajD','#000000','fillText','600px','width','1574574xRoHEX','1:539021282370:web:6aa2f6bd176eee94ffb1db','ke\x20akun\x20Anda.','Tanggal\x20Transaksi\x20:\x20','getElementById','get','exists','#4CAF50','✨\x20Pesanan\x20Anda\x20Telah\x20Berhasil!\x20✨','fire','timestamp','success','mannstore-50549.firebaseapp.com','Order\x20ID\x20tidak\x20ditemukan.','18px\x20Poppins','34798167QalzVB','fillRect','Kesalahan','Struk\x20berhasil\x20dihasilkan!','Pembayaran\x20:\x20','#ffffff','Order\x20ID\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20:\x20','productName','Struk\x20Siap!','scale','style','Game\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20:\x20','receiptCanvas','orderId','📄\x20Detail\x20Pesanan:','mannstore-50549','mannstore-50549.appspot.com','Status\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20:\x20Selesai','1551383QgxaGL','toLocaleString','height','toDate','12yYGzYO','fillStyle','573873TeRwBc','Nomor\x20HP\x20\x20\x20\x20\x20:\x20','value','left','N/A','initializeApp','🎉\x20Selamat!\x20Pesanan\x20telah\x20berhasil\x20dikirim\x20🎉','800px','G-40JZM8L3WY','combinedId','Terima\x20kasih\x20telah\x20mempercayai\x20MannStore\x20ID!','doc','jangan\x20ragu\x20untuk\x20menghubungi\x20tim\x20kami.'];_0x11eb=function(){return _0x56419a;};return _0x11eb();}const _0x1f9b11=_0x5c9b;(function(_0x4423ff,_0x519c85){const _0x34bb55=_0x5c9b,_0x537787=_0x4423ff();while(!![]){try{const _0xe70c46=-parseInt(_0x34bb55(0x1b5))/0x1+-parseInt(_0x34bb55(0x1c8))/0x2+parseInt(_0x34bb55(0x1bb))/0x3*(-parseInt(_0x34bb55(0x1b9))/0x4)+-parseInt(_0x34bb55(0x1ce))/0x5*(-parseInt(_0x34bb55(0x194))/0x6)+parseInt(_0x34bb55(0x1d7))/0x7+-parseInt(_0x34bb55(0x1dc))/0x8+parseInt(_0x34bb55(0x1a3))/0x9;if(_0xe70c46===_0x519c85)break;else _0x537787['push'](_0x537787['shift']());}catch(_0x370fa8){_0x537787['push'](_0x537787['shift']());}}}(_0x11eb,0xd152f));function _0x5c9b(_0x4ea8c7,_0x596e87){const _0x11ebfc=_0x11eb();return _0x5c9b=function(_0x5c9b52,_0x1c50f9){_0x5c9b52=_0x5c9b52-0x194;let _0x197431=_0x11ebfc[_0x5c9b52];return _0x197431;},_0x5c9b(_0x4ea8c7,_0x596e87);}const firebaseConfig={'apiKey':_0x1f9b11(0x1d8),'authDomain':_0x1f9b11(0x1a0),'projectId':_0x1f9b11(0x1b2),'storageBucket':_0x1f9b11(0x1b3),'messagingSenderId':_0x1f9b11(0x1c9),'appId':_0x1f9b11(0x195),'measurementId':_0x1f9b11(0x1c3)};firebase[_0x1f9b11(0x1c0)](firebaseConfig);const db=firebase['firestore']();async function generateReceipt(){const _0x43dd94=_0x1f9b11,_0x408d50=document[_0x43dd94(0x198)](_0x43dd94(0x1b0))[_0x43dd94(0x1bd)][_0x43dd94(0x1ca)]();if(_0x408d50===''){Swal[_0x43dd94(0x19d)]({'icon':'error','title':_0x43dd94(0x1a5),'text':'Masukkan\x20Order\x20ID.','confirmButtonColor':'#4CAF50'});return;}const _0xc1a134=await db[_0x43dd94(0x1d2)](_0x43dd94(0x1d0))[_0x43dd94(0x1c6)](_0x408d50)[_0x43dd94(0x199)]();if(_0xc1a134[_0x43dd94(0x19a)]){const _0x486508=_0xc1a134['data']();drawReceipt(_0x486508);}else Swal[_0x43dd94(0x19d)]({'icon':'error','title':_0x43dd94(0x1a5),'text':_0x43dd94(0x1a1),'confirmButtonColor':_0x43dd94(0x19b)});}function drawReceipt(_0x18333f){const _0xf8686d=_0x1f9b11,_0x18f229=document[_0xf8686d(0x198)](_0xf8686d(0x1af)),_0x76f907=_0x18f229['getContext']('2d'),_0x5c488d=0x2;_0x18f229[_0xf8686d(0x1e0)]=0x258*_0x5c488d,_0x18f229[_0xf8686d(0x1b7)]=0x320*_0x5c488d,_0x76f907[_0xf8686d(0x1ac)](_0x5c488d,_0x5c488d),_0x76f907[_0xf8686d(0x1ba)]=_0xf8686d(0x1a8),_0x76f907[_0xf8686d(0x1a4)](0x0,0x0,_0x18f229[_0xf8686d(0x1e0)]/_0x5c488d,_0x18f229['height']/_0x5c488d),_0x76f907[_0xf8686d(0x1ba)]=_0xf8686d(0x1dd),_0x76f907[_0xf8686d(0x1d9)]=_0xf8686d(0x1cf),_0x76f907[_0xf8686d(0x1d5)]=_0xf8686d(0x1d6),_0x76f907[_0xf8686d(0x1de)]('MannStore\x20ID',_0x18f229[_0xf8686d(0x1e0)]/(0x2*_0x5c488d),0x3c),_0x76f907['font']='bold\x2022px\x20Poppins',_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x19c),_0x18f229[_0xf8686d(0x1e0)]/(0x2*_0x5c488d),0x64),_0x76f907['fillStyle']=_0xf8686d(0x1d4),_0x76f907[_0xf8686d(0x1a4)](0x1e,0x82,_0x18f229[_0xf8686d(0x1e0)]/_0x5c488d-0x3c,0x2),_0x76f907[_0xf8686d(0x1d9)]=_0xf8686d(0x1d3),_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x1b1),_0x18f229['width']/(0x2*_0x5c488d),0xa0),_0x76f907[_0xf8686d(0x1d9)]=_0xf8686d(0x1a2),_0x76f907['textAlign']=_0xf8686d(0x1be);const _0x17799e=0x32;let _0x32c355=0xc8;_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x1a9)+_0x18333f[_0xf8686d(0x1c4)],_0x17799e,_0x32c355),_0x32c355+=0x1e,_0x76f907['fillText'](_0xf8686d(0x1d1)+_0x18333f[_0xf8686d(0x1aa)],_0x17799e,_0x32c355),_0x32c355+=0x1e,_0x76f907['fillText'](_0xf8686d(0x1ae)+(_0x18333f['gameName']||_0xf8686d(0x1bf)),_0x17799e,_0x32c355),_0x32c355+=0x1e,_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x1a7)+_0x18333f['paymentMethod'],_0x17799e,_0x32c355),_0x32c355+=0x1e,_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x1bc)+_0x18333f[_0xf8686d(0x1db)],_0x17799e,_0x32c355),_0x32c355+=0x1e,_0x76f907['fillText'](_0xf8686d(0x1b4),_0x17799e,_0x32c355),_0x32c355+=0x1e,_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x197)+new Date(_0x18333f[_0xf8686d(0x19e)][_0xf8686d(0x1b8)]())[_0xf8686d(0x1b6)](),_0x17799e,_0x32c355),_0x32c355+=0x3c,_0x76f907['font']=_0xf8686d(0x1d3),_0x76f907['textAlign']=_0xf8686d(0x1d6),_0x76f907['fillText'](_0xf8686d(0x1c1),_0x18f229[_0xf8686d(0x1e0)]/(0x2*_0x5c488d),_0x32c355),_0x32c355+=0x1e,_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x196),_0x18f229[_0xf8686d(0x1e0)]/(0x2*_0x5c488d),_0x32c355),_0x32c355+=0x32,_0x76f907['fillStyle']='#333',_0x76f907[_0xf8686d(0x1a4)](0x1e,_0x32c355,_0x18f229[_0xf8686d(0x1e0)]/_0x5c488d-0x3c,0x2),_0x32c355+=0x28,_0x76f907[_0xf8686d(0x1d9)]=_0xf8686d(0x1a2),_0x76f907['fillText']('💬\x20Jika\x20Anda\x20membutuhkan\x20bantuan\x20lebih\x20lanjut,',_0x18f229[_0xf8686d(0x1e0)]/(0x2*_0x5c488d),_0x32c355),_0x32c355+=0x1e,_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x1c7),_0x18f229[_0xf8686d(0x1e0)]/(0x2*_0x5c488d),_0x32c355),_0x32c355+=0x1e,_0x76f907[_0xf8686d(0x1de)](_0xf8686d(0x1c5),_0x18f229[_0xf8686d(0x1e0)]/(0x2*_0x5c488d),_0x32c355),_0x18f229['style'][_0xf8686d(0x1e0)]=_0xf8686d(0x1df),_0x18f229[_0xf8686d(0x1ad)][_0xf8686d(0x1b7)]=_0xf8686d(0x1c2),Swal[_0xf8686d(0x19d)]({'icon':_0xf8686d(0x19f),'title':_0xf8686d(0x1ab),'text':_0xf8686d(0x1a6),'confirmButtonText':_0xf8686d(0x1cb),'confirmButtonColor':'#4CAF50','preConfirm':()=>{const _0x143b55=_0xf8686d,_0x584df7=document['createElement']('a');_0x584df7['download']=_0x143b55(0x1cc),_0x584df7['href']=_0x18f229[_0x143b55(0x1cd)](_0x143b55(0x1da),0x1),_0x584df7['click']();}});}
     </script>
 </body>
 </html>
